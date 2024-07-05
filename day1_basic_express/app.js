@@ -1,44 +1,18 @@
+//import express from express
 const express = require("express");
 
+//Here we create a variable called app that will contain the express tools we need to create a server
 const app = express();
 
+//We need to tell express where to find our static files, in most cases it'll be the public folder
 app.use(express.static("public"));
 
-// ...
-// our first Route:
-app.get("/", (request, response, next) =>
-  response.sendFile(__dirname + "/views/index.html")
-);
-
-app.get("/home", (request, response, next) =>
-  response.sendFile(__dirname + "/views/home.html")
-);
-
+//By using app.get we create a route that listens to GET requests, in this case on the default/index page "/"
+app.get("/", (req, res, next) => res.sendFile(__dirname + "/views/index.html"));
 // cat route:
-app.get("/cat", (request, response, next) =>
-  response.sendFile(__dirname + "/views/cat.html")
+app.get("/cat", (req, res, next) =>
+  res.sendFile(__dirname + "/views/cat.html")
 );
 
-app.get("/search", (req, res) => {
-  console.log(req.query);
-  /* 
-  if (req.query.city === "Lisbon") {
-    res.send("Good choice!");
-  } else {
-    res.send("Still good choice but not Lisbon");
-  } */
-  res.send(req.query);
-});
-
-app.get("/users/:user", (req, res) => {
-  console.log(req.params.user);
-  res.send(req.params.user);
-});
-
-app.get("/users/:user/books/:bookId", (req, res) => {
-  console.log(req.params.user);
-  res.send(req.params);
-});
-// ...
-
+//With app.listen we make our server keep running and listening to requests on port 3000
 app.listen(3000, () => console.log("My first app listening on port 3000! "));
