@@ -1,0 +1,43 @@
+[
+  {
+    "_id": "6690445394778efa2d3a4b87",
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "codeISBN": 12345678392,
+    "quantity": 10,
+    "genre": "Fantasy",
+    "author": {
+      "name": "J.R.R. Tolkien",
+      "dob": 1898,
+      "country": "England"
+    },
+    "lastPublished": "2024-07-11T20:45:07.194Z",
+    "__v": 0
+  },
+  {
+    "_id": "6690445394778efa2d3a4b87",
+    "title": "The Lord of the Rings: The Two Towers",
+    "year": 1954,
+    "codeISBN": 12345678392,
+    "quantity": 10,
+    "genre": "Fantasy",
+    "author": {
+      "name": "J.R.R. Tolkien",
+      "dob": 1898,
+      "country": "England"
+    },
+    "lastPublished": "2024-07-11T20:45:07.194Z",
+    "__v": 0
+  },
+  {
+    "_id": "6690445394778efa2d3a4b87",
+    "title": "The Silmarillion",
+    "year": 1954,
+    "codeISBN": 12345678392,
+    "quantity": 10,
+    "genre": "Fantasy",
+    "author": "qweqweqweiou",
+    "lastPublished": "2024-07-11T20:45:07.194Z",
+    "__v": 0
+  }
+]
