@@ -30,8 +30,10 @@ const bookSchema = new Schema({
     enum: ["Drama", "Sci-Fi", "Thriller", "Fantasy"],
   },
   author: {
-    type: String,
-    trim: true,
+    // telling mongoose we will store an id
+    type: Schema.Types.ObjectId,
+    // declaring what type of id it refers to
+    ref: "Author",
   },
 });
 

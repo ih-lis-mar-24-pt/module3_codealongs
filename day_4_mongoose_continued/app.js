@@ -2,6 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const Book = require("./models/Book.model");
+const Author = require("./models/Author.model");
 
 const app = express();
 
@@ -66,14 +67,15 @@ app.get("/books", async (req, res, next) => {
 });
 
 // Get by Id
-
 app.get("/books/:bookId", async (req, res, next) => {
   try {
     //req.query
     // ?title="Lord"&year=1954
     const { bookId } = req.params;
 
-    const book = await Book.findById(bookId);
+    // populate will fill the author field with the correct information instead of just presenting an id
+    // One to one relationship
+    const book = await Book.findById(bookId).populate("author");
     //findOne returns ONLY 1, the first one that it finds
     //const specificBook = Book.findOne({ year: 1954});
     //const book = await Book.findById(req.params.bookId)
@@ -119,6 +121,22 @@ app.delete("/books/:bookId", async (req, res, next) => {
   }
 });
 
+// Create an author
+
+app.post("/authors", async (req, res, next) => {
+  const { firstName, lastName, dob } = req.body;
+  try {
+    // req.body
+    //const newAuthor = await Author.create(req.body);
+    const newAuthor = await Author.create({ firstName, lastName, dob });
+
+    res.status(201).json(newAuthor);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("There was a problem on the server");
+  }
+});
+
 // Connect to the local db
 //creates a db with the given name if it doesn't exist
 mongoose
@@ -133,3 +151,17 @@ app.listen(3000, () => console.log("App listening on port 3000"));
 // -- When we insert the data inside of the document
 // By reference
 // -- When we use the id of a different object to refer to it
+
+// Monorepo architecture
+// Front-end Repo / Client
+// Back-end / Server
+
+// Relationship types
+// One-to-one
+// Book has 1 author
+
+// One-to-many
+// 1 User has multiple Posts
+
+// Many-to-many
+// Books with many authors and authors with many books
