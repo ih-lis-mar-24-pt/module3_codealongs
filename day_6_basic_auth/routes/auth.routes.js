@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const { isAuthenticated } = require("../middlewares/jwt.middleware");
 const User = require("../models/User.model");
 const router = express.Router();
 
@@ -101,6 +101,30 @@ router.post("/login", async (req, res, next) => {
     //compare password
     const passwordCorrect = bcrypt.compareSync(password, userExists.password);
     //const passwordCorrect = bcrypt.compareSync("pikachuRocks25", "$2a$10$MvEsj/uFT50lZXF83G6c2.yOZAscHncfbLIq/Ri1C.FH5HQbpZl");
+
+    if (!passwordCorrect) {
+      res.status(400).json({ message: "Invalid credentials" });
+      return;
+    }
+
+    // Create a jwt token
+
+    // Secret key
+
+    // payload
+    //const { _id, username } = userExists;
+    const payload = {
+      _id: userExists._id,
+      username: userExists.username,
+      email,
+    };
+
+    const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+      algorithm: "HS256",
+      expiresIn: "14d",
+    });
+
+    res.status(200).json({ authToken: authToken });
   } catch (error) {
     console.error(error);
     next(error);
@@ -108,5 +132,9 @@ router.post("/login", async (req, res, next) => {
 });
 
 //GET - Verify
+router.get("/verify", isAuthenticated, async (req, res, next) => {
+  //req.payload exists because the middleware validated the user and gave back the payload
+  res.status(200).json(req.payload);
+});
 
 module.exports = router;

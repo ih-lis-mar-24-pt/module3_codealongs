@@ -5,6 +5,9 @@ require("dotenv").config();
 // ℹ️ Connects to the database
 require("./db");
 
+//require the middleware we created to check if the user is aythenticated and use it before the routes
+const { isAuthenticated } = require("./middlewares/jwt.middleware");
+
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
 const express = require("express");
@@ -27,11 +30,11 @@ res.status(403).send("Unauthorized access")
 */
 //project routes
 const projectRoutes = require("./routes/project.routes");
-app.use("/api", projectRoutes);
+app.use("/api", isAuthenticated, projectRoutes);
 // .../api/projects
 // task routes
 const taskRoutes = require("./routes/task.routes");
-app.use("/api", taskRoutes);
+app.use("/api", isAuthenticated, taskRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
