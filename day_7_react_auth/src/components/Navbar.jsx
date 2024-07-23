@@ -7,6 +7,8 @@ function Navbar() {
 
   return (
     <nav>
+      <p>{user ? user.username : "Hello"}</p>
+      {user && <img src={user.profilePic} />}
       <ul>
         <Link to="/">
           <button>Home</button>

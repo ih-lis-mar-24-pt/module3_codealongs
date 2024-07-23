@@ -11,7 +11,7 @@ const saltRounds = 10;
 router.post("/signup", async (req, res, next) => {
   try {
     // accept the information from the client
-    const { username, email, password } = req.body;
+    const { username, email, password, profilePic } = req.body;
 
     // check if the information exists
     if (username === "" || email === "" || password === "") {
@@ -63,6 +63,9 @@ router.post("/signup", async (req, res, next) => {
       username,
       email,
       password: hashedPassword,
+      profilePic: profilePic
+        ? profilePic
+        : "https://upload.wikimedia.org/wikipedia/en/a/a6/Pok%C3%A9mon_Pikachu_art.png",
     });
     // newUser = {username: "Psyduck", email: "psy@duck.com", password: 76578987yfghv}
 
@@ -70,6 +73,7 @@ router.post("/signup", async (req, res, next) => {
       _id: newUser._id,
       username: newUser.username,
       email: newUser.email,
+      profilePic: newUser.profilePic,
     };
 
     res.status(201).json(cleanUser);
@@ -117,6 +121,7 @@ router.post("/login", async (req, res, next) => {
       _id: userExists._id,
       username: userExists.username,
       email,
+      profilePic: userExists.profilePic,
     };
 
     const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {

@@ -6,6 +6,9 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [profilePic, setProfilePic] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = useNavigate();
@@ -13,6 +16,27 @@ function Signup() {
   const handleUsername = e => setUsername(e.target.value);
   const handleEmail = e => setEmail(e.target.value);
   const handlePassword = e => setPassword(e.target.value);
+
+  const handleFileUpload = async e => {
+    //configuring how to send the file
+    const uploadData = new FormData();
+
+    uploadData.append("imgUrl", e.target.files[0]);
+
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/upload`,
+        uploadData
+      );
+      setLoading(false);
+      setProfilePic(response.data.fileUrl);
+      console.log(response.data.fileUrl);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -24,6 +48,7 @@ function Signup() {
         username,
         email,
         password,
+        profilePic,
       });
       navigate("/login");
     } catch (error) {
@@ -62,7 +87,19 @@ function Signup() {
           onChange={handlePassword}
         />
 
-        <button type="submit">Sign up</button>
+        <label htmlFor="imgUrl">Profile Picture</label>
+        <input
+          type="file"
+          name="imgUrl"
+          id="imgUrl"
+          onChange={handleFileUpload}
+        />
+
+        <button
+          disabled={loading}
+          type="submit">
+          Sign up
+        </button>
       </form>
 
       {errorMessage && <p className="error-message"> {errorMessage} </p>}

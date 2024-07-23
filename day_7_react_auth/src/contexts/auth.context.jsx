@@ -36,6 +36,14 @@ function AuthProviderWrapper(props) {
         );
 
         setUser(response.data);
+        /* 
+        {
+        _id: '2324',
+        username,
+        email,
+        profilePic
+        }
+        */
         setLoading(false);
       } catch (error) {
         setUser(null);
